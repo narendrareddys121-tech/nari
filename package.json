@@ -2,6 +2,7 @@
   "name": "bidrush",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@9.15.5",
   "description": "BidRush - Bid Fast. Win Big. | Auction Marketplace for Bengaluru",
   "workspaces": [
     "apps/*",
