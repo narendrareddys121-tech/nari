@@ -8,6 +8,11 @@
     "apps/*",
     "packages/*"
   ],
+  "pnpm": {
+    "overrides": {
+      "@types/express": "4.17.25"
+    }
+  },
   "scripts": {
     "start": "pnpm -w run dev",
     "dev": "concurrently \"pnpm --filter api dev\" \"pnpm --filter web dev\"",
