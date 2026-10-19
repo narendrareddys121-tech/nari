@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
-const googleSignInUrl = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1'}/auth/google/start`;
+const googleSignInUrl = '/api/v1/auth/google/start';
 
 export function GoogleSignInButton() {
   const [loading, setLoading] = useState(false);

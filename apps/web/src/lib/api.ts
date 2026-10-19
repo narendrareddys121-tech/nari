@@ -1,5 +1,5 @@
-// BidRush API Client — all requests go through the Next.js proxy
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1';
+// Keep browser requests same-origin so HTTP-only cookies work in every deployment.
+const BASE_URL = '/api/v1';
 
 class ApiError extends Error {
   constructor(

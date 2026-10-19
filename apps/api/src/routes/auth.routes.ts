@@ -15,6 +15,13 @@ import { env } from '../config/env.js';
 
 export const authRouter = Router();
 
+// The browser starts OAuth through the Next.js same-origin proxy. Keeping the
+// fallback on WEB_ORIGIN makes the flow work after deployment without pointing
+// Google at a private API hostname. Set GOOGLE_REDIRECT_URI when the API has a
+// separate public callback URL.
+const googleRedirectUri = () =>
+  env.GOOGLE_REDIRECT_URI ?? `${env.WEB_ORIGIN}/api/v1/auth/google/callback`;
+
 // Starts Google's account chooser. Google will show all available accounts because
 // prompt=select_account is explicit, even when a browser already has a session.
 authRouter.get('/google/start', (req, res, next) => {
@@ -23,7 +30,7 @@ authRouter.get('/google/start', (req, res, next) => {
       res.redirect(`${env.WEB_ORIGIN}/auth/login?error=google_not_configured`);
       return;
     }
-    const redirectUri = env.GOOGLE_REDIRECT_URI ?? `http://localhost:${env.PORT}/api/v1/auth/google/callback`;
+    const redirectUri = googleRedirectUri();
     const params = new URLSearchParams({
       client_id: env.GOOGLE_CLIENT_ID,
       redirect_uri: redirectUri,
@@ -46,7 +53,7 @@ authRouter.get('/google/callback', async (req, res, next) => {
     }
     const code = typeof req.query.code === 'string' ? req.query.code : '';
     if (!code) throw new AppError(400, 'GOOGLE_CODE_REQUIRED', 'Google authorization was cancelled or failed.');
-    const redirectUri = env.GOOGLE_REDIRECT_URI ?? `http://localhost:${env.PORT}/api/v1/auth/google/callback`;
+    const redirectUri = googleRedirectUri();
     const user = await authService.loginWithGoogle(code, redirectUri);
     const refreshToken = authService.generateRefreshToken();
     const accessToken = authService.generateAccessToken(user);

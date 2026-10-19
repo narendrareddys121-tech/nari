@@ -79,14 +79,14 @@ pnpm dev
 ### Google account chooser
 
 The sign-in and registration pages include a real **Continue with Google** flow. When
-configured, it opens Google's account chooser (`prompt=select_account`), so users can
-choose any Google account already available in their browser and still use the same
-BidRush account as a Host or Guest.
+configured, it opens Google's account chooser (`prompt=select_account`), so every
+Google account can sign in and use the same BidRush account as a Host or Guest.
+There is no application-level email-domain allowlist.
 
 To enable it locally, create an OAuth 2.0 Web application client in Google Cloud
 Console and add this authorized redirect URI:
 
-`http://localhost:4000/api/v1/auth/google/callback`
+`http://localhost:3000/api/v1/auth/google/callback`
 
 Then set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
 `GOOGLE_REDIRECT_URI` in `apps/api/.env`, and restart `pnpm dev`. Until those
@@ -96,10 +96,18 @@ than pretending that a Google login succeeded.
 Quick Google Cloud setup:
 
 1. Open **Google Cloud Console → APIs & Services → Credentials**.
-2. Create an **OAuth client ID** with application type **Web application**.
-3. Add `http://localhost:4000/api/v1/auth/google/callback` under **Authorized redirect URIs**.
-4. Copy the generated client ID and client secret into `apps/api/.env`.
-5. Restart the API. The button will open Google's account chooser and use the selected verified account.
+2. Configure the OAuth consent screen with **User type: External**.
+3. Add the app's name, support email, and developer contact email.
+4. Publish the consent screen to production. While it is in testing, only accounts listed under **Test users** can sign in.
+5. Create an **OAuth client ID** with application type **Web application**.
+6. Add `http://localhost:3000/api/v1/auth/google/callback` under **Authorized redirect URIs**.
+7. Copy the generated client ID and client secret into `apps/api/.env`.
+8. Restart the API. The button will open Google's account chooser and accept any verified Google account.
+
+For production, add the deployed web URL with `/api/v1/auth/google/callback` as an
+authorized redirect URI and set the same URL in `GOOGLE_REDIRECT_URI`. If the API
+has a separate public hostname, use that hostname instead and register its callback
+URL with Google.
 
 ---
 
