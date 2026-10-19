@@ -40,6 +40,8 @@ function LoginForm() {
     google_not_configured:
       'Google sign-in is not connected yet. Add your Google OAuth credentials to apps/api/.env, restart the API, and try again.',
     google_cancelled: 'Google sign-in was cancelled. You can try again or continue with email.',
+    google_access_denied:
+      'This Google account was blocked by the OAuth app. The app owner must publish the Google consent screen as External, or add this account as a Test user while the app is still in Testing mode.',
     google_failed: 'Google could not verify this sign-in. Check the selected account and try again.',
     google_error: 'Google sign-in could not be completed. Please try again.',
   }[searchParams.get('error') ?? ''] ?? null;

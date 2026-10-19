@@ -48,7 +48,10 @@ authRouter.get('/google/start', (req, res, next) => {
 authRouter.get('/google/callback', async (req, res, next) => {
   try {
     if (typeof req.query.error === 'string') {
-      res.redirect(`${env.WEB_ORIGIN}/auth/login?error=google_cancelled`);
+      const errorCode = req.query.error === 'access_denied'
+        ? 'google_access_denied'
+        : 'google_cancelled';
+      res.redirect(`${env.WEB_ORIGIN}/auth/login?error=${errorCode}`);
       return;
     }
     const code = typeof req.query.code === 'string' ? req.query.code : '';

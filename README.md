@@ -104,6 +104,11 @@ Quick Google Cloud setup:
 7. Copy the generated client ID and client secret into `apps/api/.env`.
 8. Restart the API. The button will open Google's account chooser and accept any verified Google account.
 
+If another user sees an access-denied message, the consent screen is still in
+Testing mode or the account is not listed as a Test user. Publishing the External
+app is the step that enables every Google account; this cannot be bypassed by the
+BidRush application.
+
 For production, add the deployed web URL with `/api/v1/auth/google/callback` as an
 authorized redirect URI and set the same URL in `GOOGLE_REDIRECT_URI`. If the API
 has a separate public hostname, use that hostname instead and register its callback
